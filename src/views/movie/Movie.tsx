@@ -8,14 +8,10 @@ import ScrollContainer from '../../containers/ScrollContainer';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { MainStackParamList } from '../../@types/Stacks';
 
-// interface MovieProps {
-//   movie: IMovie | undefined;
-//   backToGenres: () => void;
-// }
 type MovieProps = NativeStackScreenProps<MainStackParamList,'Movie'>;
 
 const Movie = (props: MovieProps) => {
-  console.log('route:',props.route.path);
+  console.log('current movie:',props.route.params.movie);
   return (
     <ScrollContainer>
       {props.route.params?.movie ? (

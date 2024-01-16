@@ -22,14 +22,19 @@ type GenreProps = NativeStackScreenProps<MainStackParamList,'Genre'>;
 
 const Genre = (props: GenreProps) => {
   const [movies, setMovies] = useState<IMovie[]>([]);
-
+  console.log('current page genre:',props.route.params.genre);
   useEffect(() => {
+    const fetchData = async ()=>{
+      setMovies(await getMovieByGenreId(props.route.params.genre.id));
+    }
     if (typeof props.route.params.genre !== 'undefined') {
-      // setMovies(getMovieByGenreId(props.route.params.genre.id));
+      fetchData();
     }
   }, [props.route.params.genre]);
 
   return (
+    <>
+    <Text>Current Genre:{props.route.params.genre.name}</Text>
     <ScrollContainer>
       {movies.map(movie => {
         return (
@@ -39,6 +44,7 @@ const Genre = (props: GenreProps) => {
         );
       })}
     </ScrollContainer>
+    </>
   );
 };
 

@@ -22,16 +22,19 @@ const Home = (props: HomeProps) => {
     console.log('press me!');
     setGenres(await getGenres());
   }
+
   useEffect(() => {
     console.log('get genres');
-
-    // setGenres(getGenres());
+    const fetchGenres = async ()=>{
+      setGenres(await getGenres());
+    }
+    fetchGenres();
   }, []);
 
   return (
     <ScrollContainer>
       <Header text="Movie Genres" />
-      <Button title='test me' onPress={onButtonPress}/>
+      {/* <Button title='test me' onPress={onButtonPress}/> */}
       {genres.map(genre => {
         return (
           <Pressable key={genre.id} onPress={() => props.navigation.navigate('Genre',{genre:genre})}>
