@@ -12,30 +12,55 @@ const createFullAPIPath: (path: string) => string = path => {
   );
 };
 
+
 async function makeAPICall<T>(path: string): Promise<T>{
   console.log(createFullAPIPath(path));
   const response = await fetch(createFullAPIPath(path));
   return response.json() as Promise<T>;
-
 };
 
-const genres: IGenre[] = require('../../assets/data/genres.json');
-const movies: IMovie[] = require('../../assets/data/movies.json');
-
-const getGenres = (): Array<IGenre> => {
-  return genres;
+const getGenres = async (): Promise<Array<IGenre>> => {
+  let resultData : Array<IGenre> = [];
+  try{
+    const data = await makeAPICall<{genres:Array<IGenre>}>('genre/movie/list');
+    resultData = data.genres;  
+    console.log(data);
+  }catch(e){
+    console.log(e);
+  }
+  return resultData;
 };
 
-const getMovies = (): Array<IMovie> => {
-  return movies;
+const getMovieByGenreId = async (genreId: number): Promise<Array<IMovie>> => {
+  let data: Array<IMovie> = [];
+  try{
+    const response = await makeAPICall<{
+      page:number;
+      results:Array<IMovie>;
+    }>('discover/movie?with_genres='+genreId);
+    data = response.results;
+    console.log(data);
+  }catch(e){
+    console.log(e);
+  }
+  return data;
 };
 
-const getMovieByGenreId = (genreId: number): Array<IMovie> => {
-  return movies.filter(movie => movie.genre_ids.indexOf(genreId) > -1);
+const getMovieById = async (movieId: number): Promise<IMovie | undefined> => {
+  try{
+    const response = await makeAPICall<IMovie | undefined>(
+      'movie/'+movieId,
+    );
+    console.log(response);
+    return response;  
+  }catch(e){
+    console.log(e);
+  }
+  
+  // return new Promise((resolve)=>{
+  //   resolve(undefined);
+  // })
+  // return movies.find(movie => movie.id === movieId);
 };
 
-const getMovieById = (movieId: number): IMovie | undefined => {
-  return movies.find(movie => movie.id === movieId);
-};
-
-export {getGenres, getMovies, getMovieByGenreId, getMovieById};
+export {getGenres, getMovieByGenreId, getMovieById};

@@ -25,7 +25,7 @@ const Genre = (props: GenreProps) => {
 
   useEffect(() => {
     if (typeof props.route.params.genre !== 'undefined') {
-      setMovies(getMovieByGenreId(props.route.params.genre.id));
+      // setMovies(getMovieByGenreId(props.route.params.genre.id));
     }
   }, [props.route.params.genre]);
 
