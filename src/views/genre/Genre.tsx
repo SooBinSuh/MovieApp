@@ -11,13 +11,6 @@ import { ColorConstants, FontConstants, SizeConstants } from '../../constants/Co
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { MainStackParamList } from '../../@types/Stacks';
 
-
-// interface GenreProps {
-//   genre: IGenre | undefined;
-//   backToHome: () => void;
-//   chooseMovie: (movie: IMovie) => void;
-// }
-
 type GenreProps = NativeStackScreenProps<MainStackParamList,'Genre'>;
 
 const Genre = (props: GenreProps) => {
