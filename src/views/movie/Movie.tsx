@@ -1,5 +1,5 @@
 import React from 'react';
-import {Text, View, StyleSheet} from 'react-native';
+import {Text, View, StyleSheet, Button} from 'react-native';
 import {IMovie} from '../../@types/IMovie';
 import BackButton from '../../components/BackButton';
 import Header from '../../components/Header';
@@ -11,8 +11,15 @@ import { MainStackParamList } from '../../@types/Stacks';
 type MovieProps = NativeStackScreenProps<MainStackParamList,'Movie'>;
 
 const Movie = (props: MovieProps) => {
-  console.log('current movie:',props.route.params.movie);
+  const _movie: IMovie|undefined = props.route.params.movie;
+
+  console.log('render movie:',_movie?.title,'_id:',_movie?.id);
+  const goBackNavigation = ()=>{
+    props.navigation.goBack();
+  }
   return (
+    <View style={{flex:1}}>
+      <Button title='test' onPress={goBackNavigation}/>
     <ScrollContainer>
       {props.route.params?.movie ? (
         <View>
@@ -22,6 +29,7 @@ const Movie = (props: MovieProps) => {
       <Text>undefined!</Text>
       }
     </ScrollContainer>
+    </View>
   );
 };
 

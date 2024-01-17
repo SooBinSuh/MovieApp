@@ -11,7 +11,7 @@ const ScrollContainer = (props: ScrollContainerProps) => {
   return (
     <SafeAreaView style={styles.backgroundStyle}>
       <ScrollView
-        contentInsetAdjustmentBehavior="automatic"
+        // contentInsetAdjustmentBehavior="automatic"
         contentContainerStyle={styles.contentContainer}
         style={styles.backgroundStyle}>
         {props.children}

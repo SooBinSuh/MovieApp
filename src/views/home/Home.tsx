@@ -11,33 +11,36 @@ import {
 } from '../../constants/Constants';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { MainStackParamList } from '../../@types/Stacks';
+import { NavigationContainer } from '@react-navigation/native';
 
 
 type HomeProps = NativeStackScreenProps<MainStackParamList, 'Home'>;
 
-const Home = (props: HomeProps) => {
+const Home = (props:HomeProps) => {
+  
   const [genres, setGenres] = useState<IGenre[]>([]);
-
-  const onButtonPress = async()=>{
-    console.log('press me!');
-    setGenres(await getGenres());
-  }
-
+  console.log('genres:',genres);
+  useEffect(()=>{
+    console.log('HOME navigation:',props.navigation.isFocused());
+  },[props.navigation])
   useEffect(() => {
     console.log('get genres');
     const fetchGenres = async ()=>{
       setGenres(await getGenres());
     }
-    fetchGenres();
+    fetchGenres(); 
+    
   }, []);
-
+  const onGenrePress = (genre:IGenre)=>{
+    console.log('ongenrepress');
+    props.navigation.navigate('Genre',{genre:genre});
+  }
   return (
     <ScrollContainer>
-      <Header text="Movie Genres" />
       {/* <Button title='test me' onPress={onButtonPress}/> */}
       {genres.map(genre => {
         return (
-          <Pressable key={genre.id} onPress={() => props.navigation.navigate('Genre',{genre:genre})}>
+          <Pressable key={genre.id} onPress={() => onGenrePress(genre)}>
             <Text style={styles.genreTitle}>{genre.name}</Text>
           </Pressable>
         );

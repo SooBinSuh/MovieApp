@@ -24,7 +24,6 @@ const getGenres = async (): Promise<Array<IGenre>> => {
   try{
     const data = await makeAPICall<{genres:Array<IGenre>}>('genre/movie/list');
     resultData = data.genres;  
-    console.log(data);
   }catch(e){
     console.log(e);
   }
@@ -39,7 +38,6 @@ const getMovieByGenreId = async (genreId: number): Promise<Array<IMovie>> => {
       results:Array<IMovie>;
     }>('discover/movie?with_genres='+genreId);
     data = response.results;
-    console.log(data);
   }catch(e){
     console.log(e);
   }

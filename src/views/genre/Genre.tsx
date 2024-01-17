@@ -15,23 +15,31 @@ type GenreProps = NativeStackScreenProps<MainStackParamList,'Genre'>;
 
 const Genre = (props: GenreProps) => {
   const [movies, setMovies] = useState<IMovie[]>([]);
-  console.log('current page genre:',props.route.params.genre);
+
+  console.log('render genre:',props.route.params.genre);
+
   useEffect(() => {
+    console.log('fetch data for genre ',props.route.params.genre);
     const fetchData = async ()=>{
       setMovies(await getMovieByGenreId(props.route.params.genre.id));
     }
     if (typeof props.route.params.genre !== 'undefined') {
+      console.log('will fetch');
       fetchData();
     }
   }, [props.route.params.genre]);
 
+  const onGenrePress = (movie:IMovie)=>{
+    console.log('ongenrepress! movie:',movie);
+    props.navigation.navigate('Movie',{movie:movie});
+  }
   return (
     <>
     <Text>Current Genre:{props.route.params.genre.name}</Text>
     <ScrollContainer>
       {movies.map(movie => {
         return (
-          <Pressable key={movie.id} onPress={() => props.navigation.navigate('Movie',{movie:movie})}>
+          <Pressable key={movie.id} onPress={()=>onGenrePress(movie)}>
             <Text style={styles.movieTitle}>{movie.title}</Text>
           </Pressable>
         );
