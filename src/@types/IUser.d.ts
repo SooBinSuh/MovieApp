@@ -2,5 +2,6 @@ import {IMovie} from './IMovie';
 
 export type IUser = {
   name: string;
-  favs: {[favId: number]: IMovie};
+  favs: {[favId: number]: IMovie};//index signature
+  
 };

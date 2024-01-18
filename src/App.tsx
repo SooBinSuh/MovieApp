@@ -1,4 +1,5 @@
 import React, {useState} from 'react';
+import {Provider} from 'react-redux';
 
 import {View} from 'react-native';
 import {IGenre} from './@types/IGenre';
@@ -13,6 +14,7 @@ import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import User from './views/user/User';
 import {ColorConstants} from './constants/Constants';
 import {SafeAreaView} from 'react-native-safe-area-context';
+import { store } from './store/rootStore';
 
 const MainStack = createNativeStackNavigator<MainStackParamList>();
 
@@ -20,10 +22,7 @@ const TabNavigator = createBottomTabNavigator();
 
 const MainStackScreen = () => {
   return (
-    <MainStack.Navigator
-    initialRouteName='Home'
- 
-    >
+    <MainStack.Navigator initialRouteName="Home">
       <MainStack.Screen
         name="Home"
         component={Home}
@@ -47,29 +46,32 @@ const MainStackScreen = () => {
 
 const App = () => {
   return (
-    <View style={{flex: 1}}>
-      <SafeAreaView style={{flex:1}}>
-        <NavigationContainer>
-          {/* <MainStackScreen/> */}
-          <TabNavigator.Navigator
-          screenOptions={{
-            // unmountOnBlur:true
-          }}
-            >
-            <TabNavigator.Screen
-              name="Main"
-              component={MainStackScreen}
-              options={{headerShown:false}}
-            />
-            <TabNavigator.Screen
-              name="User"
-              component={User}
-              options={{headerShown:false}}
-            />
-          </TabNavigator.Navigator>
-        </NavigationContainer>
-      </SafeAreaView>
-    </View>
+    <Provider store={store}>
+      <View style={{flex: 1}}>
+        <SafeAreaView style={{flex: 1}}>
+          <NavigationContainer>
+            {/* <MainStackScreen/> */}
+            <TabNavigator.Navigator
+              screenOptions={
+                {
+                  // unmountOnBlur:true
+                }
+              }>
+              <TabNavigator.Screen
+                name="Main"
+                component={MainStackScreen}
+                options={{headerShown: false}}
+              />
+              <TabNavigator.Screen
+                name="User"
+                component={User}
+                options={{headerShown: false}}
+              />
+            </TabNavigator.Navigator>
+          </NavigationContainer>
+        </SafeAreaView>
+      </View>
+    </Provider>
   );
 };
 
