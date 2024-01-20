@@ -8,7 +8,7 @@ import Home from './views/home/Home';
 import Genre from './views/genre/Genre';
 import Movie from './views/movie/Movie';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
-import {MainStackParamList} from './@types/Stacks';
+import {MainStackParamList, UserStackParamList} from './@types/Stacks';
 import {NavigationContainer} from '@react-navigation/native';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import User from './views/user/User';
@@ -17,7 +17,7 @@ import {SafeAreaView} from 'react-native-safe-area-context';
 import { store } from './store/rootStore';
 
 const MainStack = createNativeStackNavigator<MainStackParamList>();
-
+const UserStack = createNativeStackNavigator<UserStackParamList>();
 const TabNavigator = createBottomTabNavigator();
 
 const MainStackScreen = () => {
@@ -26,23 +26,26 @@ const MainStackScreen = () => {
       <MainStack.Screen
         name="Home"
         component={Home}
-        // options={{
-        //   title: 'Movie Genres',
-        // }}
       />
       <MainStack.Screen
         name="Genre"
         component={Genre}
-        // options={{title: 'Movies'}}
       />
       <MainStack.Screen
         name="Movie"
         component={Movie}
-        // options={({route}) => ({title: route.params.movie?.title})}
       />
     </MainStack.Navigator>
   );
 };
+const UserStackScreen = ()=>{
+  return (
+    <UserStack.Navigator>
+      <UserStack.Screen name="User" component={User} />
+      <UserStack.Screen name="Movie" component={Movie} />
+    </UserStack.Navigator>
+  )
+}
 
 const App = () => {
   return (
@@ -58,13 +61,13 @@ const App = () => {
                 }
               }>
               <TabNavigator.Screen
-                name="Main"
+                name="MainTab"
                 component={MainStackScreen}
                 options={{headerShown: false}}
               />
               <TabNavigator.Screen
-                name="User"
-                component={User}
+                name="UserTab"
+                component={UserStackScreen}
                 options={{headerShown: false}}
               />
             </TabNavigator.Navigator>

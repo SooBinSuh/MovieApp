@@ -1,10 +1,14 @@
-import {Appearance} from 'react-native';
+import {Appearance, TextStyle} from 'react-native';
+
+type FontWeight = 'normal' | 'bold' | '100' | '200' | '300' | '400' | '500' | '600' | '700' | '800' | '900';
+
+
 const isDarkMode = Appearance.getColorScheme() === 'dark';
 const FontConstants = {
   familyRegular: 'sans-serif',
   sizeTitle: 18,
   sizeRegular: 14,
-  weightBold: 'bold',
+  weightBold: "bold" as FontWeight,
 };
 const ColorConstants = {
   background: isDarkMode ? '#333333' : '#efefef',

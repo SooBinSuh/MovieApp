@@ -1,29 +1,55 @@
-import { StyleSheet, Text, View } from "react-native"
-import { ColorConstants, FontConstants, SizeConstants } from "../../constants/Constants"
-import { useUserStore } from "../../store/userStore"
+import {Pressable, StyleSheet, Text, View} from 'react-native';
+import {
+  ColorConstants,
+  FontConstants,
+  SizeConstants,
+} from '../../constants/Constants';
+import {NativeStackScreenProps} from '@react-navigation/native-stack';
+import {UserStackParamList} from '../../@types/Stacks';
+import {useAppSelector} from '../../hooks';
+import ScrollContainer from '../../containers/ScrollContainer';
+import { IMovie } from '../../@types/IMovie';
 
-const User = () => {
-    // const name = useUserStore(state => state.name);
+type UserProps = NativeStackScreenProps<UserStackParamList, 'User'>;
 
-    return (
-        <View style={styles.placeholderContainer}>
-            <Text style={styles.placeholder}>We will create user here</Text>
-            {/* <Text>name is {name}</Text> */}
-        </View>
-    )
-}
+const User = (props: UserProps) => {
+  const user = useAppSelector(state => state.user);
+
+  const onMoviePress = (movie:IMovie)=>{
+    props.navigation.navigate('Movie',{movie:movie});
+  }
+  return (
+    <View style={styles.userScreenContainer}>
+      <View style={styles.placeholderContainer}>
+        <Text style={styles.placeholder}>
+          Hello, {user.name} this is your favs
+        </Text>
+      </View>
+      <ScrollContainer>
+        {Object.values(user.favs).map(movie => {
+          return (
+            <Pressable key={movie.id} onPress={()=>onMoviePress(movie)}>
+              <Text>{movie.title}</Text>
+            </Pressable>
+          );
+        })}
+      </ScrollContainer>
+    </View>
+  );
+};
 const styles = StyleSheet.create({
-    placeholderContainer:{
-        flex:1,
-        alignItems:'center',
-        justifyContent:'center',
-        backgroundColor: ColorConstants.background,
-    },
-    placeholder:{
-        fontSize:FontConstants.sizeRegular,
-        marginBottom: SizeConstants.paddingSmall,
-        padding: SizeConstants.paddingLarge,
-        color: ColorConstants.font,
-    }
-})
+  userScreenContainer: {
+    flex: 1,
+    padding: SizeConstants.paddingLarge,
+  },
+  placeholderContainer: {
+    backgroundColor: ColorConstants.background,
+    marginVertical: 20,
+  },
+  placeholder: {
+    fontSize: FontConstants.sizeTitle,
+    fontWeight: FontConstants.weightBold,
+    color: ColorConstants.font,
+  },
+});
 export default User;

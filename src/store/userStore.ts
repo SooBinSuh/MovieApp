@@ -36,13 +36,17 @@ const userSlice = createSlice({
   initialState,
   reducers:{
     addFav: (state,action:PayloadAction<IMovie>) => {
-      console.log('hererere with movie:',action.payload);
-      if (state.favs[action.payload.id] !== undefined){
+      if (state.favs[action.payload.id] === undefined){
         state.favs[action.payload.id] = action.payload;
+      }
+    },
+    removeFav:(state,action:PayloadAction<number>)=>{
+      if(state.favs[action.payload] !== undefined){
+        delete state.favs[action.payload];
       }
     }
   }
 })
 
-export const {addFav} = userSlice.actions
+export const {addFav,removeFav} = userSlice.actions
 export default userSlice.reducer
