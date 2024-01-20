@@ -1,3 +1,4 @@
+import {addFav, removeFav} from '../../store/userStore';
 import React, {useEffect} from 'react';
 import {Text, View, StyleSheet, Button, Pressable} from 'react-native';
 import {IMovie} from '../../@types/IMovie';
@@ -9,15 +10,16 @@ import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {MainStackParamList} from '../../@types/Stacks';
 import {useDispatch, useSelector} from 'react-redux';
 
-import {addFav, removeFav} from '../../store/userStore';
-import {useAppSelector} from '../../hooks';
+import { useAppSelector} from '../../hooks';
+import { RootState } from '../../store/rootStore';
 
 type MovieProps = NativeStackScreenProps<MainStackParamList, 'Movie'>;
 
 const Movie = (props: MovieProps) => {
   const _movie: IMovie | undefined = props.route.params.movie;
-
+  
   const {favs} = useAppSelector(state => state.user);
+  
   const dispatch = useDispatch();
 
   return (

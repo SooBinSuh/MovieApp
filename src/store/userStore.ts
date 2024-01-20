@@ -1,35 +1,8 @@
-import {create} from 'zustand';
 import {IMovie} from '../@types/IMovie';
-import {persist} from 'zustand/middleware';
 import { IUser } from '../@types/IUser';
 import { PayloadAction, createSlice } from '@reduxjs/toolkit';
 
-// type UserStoreFunctions = {
-//   addFav: (fav: IMovie) => void;
-//   addFavById: (favId: number) => void;
-//   removeFav: (favId: number) => void;
-// };
-// export const useUserStore = create(
-//   persist<IUser & UserStoreFunctions>(
-//     (set, get) => ({
-//       name: 'John',
-//       favs: {},
-//       addFav: () => {},
-//       addFavById: () => {},
-//       removeFav:()=>{},
-//     }),
-//     {
-//       name: 'HYDRAGE::USER',
-//     },
-//   ),
-// );
 
-//reducer for user
-// export const user = {
-//   name:'Jack',
-//   favs:{},
-  
-// }
 const initialState = {name:'Jack',favs:{}} as IUser
 const userSlice = createSlice({
   name:'user',
@@ -47,6 +20,13 @@ const userSlice = createSlice({
     }
   }
 })
+//TODO: Currently, selector function not working becuase of circular dependency between RootStore.ts
+// export const selectAllFavs = (state:RootState) => {state.user.favs}//Selector Function to use 
 
 export const {addFav,removeFav} = userSlice.actions
 export default userSlice.reducer
+
+//Create selector functions to comfortably edit when changes are made in State structures
+
+
+

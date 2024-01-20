@@ -61,7 +61,7 @@ const App = () => {
                 }
               }>
               <TabNavigator.Screen
-                name="MainTab"
+                name="MoviesTab"
                 component={MainStackScreen}
                 options={{headerShown: false}}
               />
