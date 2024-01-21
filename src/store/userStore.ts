@@ -3,7 +3,7 @@ import { IUser } from '../@types/IUser';
 import { PayloadAction, createSlice } from '@reduxjs/toolkit';
 
 
-const initialState = {name:'Jack',favs:{}} as IUser
+const initialState = {name:'Jack',favs:{}} as IUser;
 const userSlice = createSlice({
   name:'user',
   initialState,
