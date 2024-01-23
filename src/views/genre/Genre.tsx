@@ -24,19 +24,8 @@ const Genre = (props: GenreProps) => {
   const {favs} = useAppSelector(state => state.user);
 
   const {data, error} = useGetMoviesByGenreIdQuery(props.route.params.genre.id);
-  console.log('data_length:', data?.results.length );
-  // useEffect(() => {
-  //   console.log('fetch data for genre ', props.route.params.genre);
-  //   const fetchData = async () => {
-  //     // setMovies(await getMovieByGenreId(props.route.params.genre.id));
-  //     //fetch data -> dispatch(setMovies)
-  //   };
-  //   if (typeof props.route.params.genre !== 'undefined') {
-  //     console.log('will fetch');
-  //     fetchData();
-  //   }
-  // }, [props.route.params.genre]);
 
+  console.log('data_length:', data?.results.length );
   const onGenrePress = (movie: IMovie) => {
     console.log('ongenrepress! movie:', movie);
     props.navigation.navigate('Movie', {movie: movie});
@@ -44,8 +33,8 @@ const Genre = (props: GenreProps) => {
   return (
     <>
       {error !== undefined ? (
-        <Text>
-          {'error' in error ? (error.data as any) : JSON.stringify(error)}
+        <Text>{'error'}
+          {/* {'error' in error ? (error.data as any) : JSON.stringify(error)} */}
         </Text>
       ) : data ? (
         <ScrollContainer>
