@@ -114,7 +114,8 @@ export const movieApi = createApi({
       query: () => `/genre/movie/list?api_key=${APIConstants.API_KEY}`
     }),
     getMoviesByGenreId: builder.query<{results:Array<IMovie>},number>({
-      query:(genreId) => `discover/movie?with_genres=${genreId}&api_key=${APIConstants.API_KEY}`
+      query:(genreId) => `discover/movie?with_genres=${genreId}&api_key=${APIConstants.API_KEY}`,
+      keepUnusedDataFor:0.0001,//disables caching
     }),
     getMovieById: builder.query<IMovie | undefined, number>({
       query:(movieId)=> `movie/${movieId}`
