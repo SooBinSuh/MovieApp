@@ -20,7 +20,7 @@ import {useGetMoviesByGenreIdQuery} from '../../services/movieService';
 type GenreProps = NativeStackScreenProps<MainStackParamList, 'Genre'>;
 
 const Genre = (props: GenreProps) => {
-  // const [movies, setMovies] = useState<IMovie[]>([]);
+
   const {favs} = useAppSelector(state => state.user);
 
   const {data, error} = useGetMoviesByGenreIdQuery(props.route.params.genre.id);

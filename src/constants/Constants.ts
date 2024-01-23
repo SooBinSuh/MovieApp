@@ -7,7 +7,10 @@ const isDarkMode = Appearance.getColorScheme() === 'dark';
 const FontConstants = {
   familyRegular: 'sans-serif',
   sizeTitle: 18,
+  sizeSmall: 12,
   sizeRegular: 14,
+
+  
   weightBold: "bold" as FontWeight,
 };
 const ColorConstants = {
