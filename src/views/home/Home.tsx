@@ -28,7 +28,7 @@ import {
 } from '../../services/movieService';
 import {useDispatch} from 'react-redux';
 import {IMovie} from '../../@types/IMovie';
-import { APIConstants } from '../../constants/APIConstants';
+import {APIConstants} from '../../constants/APIConstants';
 
 type HomeProps = NativeStackScreenProps<MainStackParamList, 'Home'>;
 
@@ -51,9 +51,7 @@ const Home = (props: HomeProps) => {
             return (
               // <Pressable key={genre.id} onPress={() => onGenrePress(genre)}>
               <View key={genre.id}>
-                <Text  style={styles.genreTitle}>
-                  {genre.name}
-                </Text>
+                <Text style={styles.genreTitle}>{genre.name}</Text>
                 <GenreMovieStrip movieId={genre.id} />
               </View>
             );
@@ -78,7 +76,13 @@ const GenreMovieStrip = (props: {movieId: number}) => {
         <FlatList
           horizontal={true}
           data={data?.results}
-          renderItem={({item,index}) => <MovieItem item={item} isFirst={index == 0} isLast={item === data?.results[data.results.length-1]} />}
+          renderItem={({item, index}) => (
+            <MovieItem
+              item={item}
+              isFirst={index == 0}
+              isLast={item === data?.results[data.results.length - 1]}
+            />
+          )}
           keyExtractor={item => `${item.id}`}
           // style={{paddingHorizontal:20}}
         />
@@ -87,11 +91,24 @@ const GenreMovieStrip = (props: {movieId: number}) => {
   );
 };
 
-const MovieItem = (props: {item: IMovie,isFirst:boolean, isLast: boolean}) => {
-
+const MovieItem = (props: {
+  item: IMovie;
+  isFirst: boolean;
+  isLast: boolean;
+}) => {
   return (
-    <View style={{width:180,marginVertical:8,marginStart:props.isFirst ? 0:8,marginEnd:props.isLast?0:8}}>
-      <Image resizeMode='cover' style={styles.mediumLogo} src={`${APIConstants.IMAGE_URL}${props.item.poster_path}`}/>
+    <View
+      style={{
+        width: 180,
+        marginVertical: 8,
+        marginStart: props.isFirst ? 0 : 8,
+        marginEnd: props.isLast ? 0 : 8,
+      }}>
+      <Image
+        resizeMode="cover"
+        style={styles.mediumLogo}
+        src={`${APIConstants.IMAGE_URL}${props.item.poster_path}`}
+      />
     </View>
   );
 };
@@ -102,14 +119,13 @@ const styles = StyleSheet.create({
     marginTop: SizeConstants.paddingRegular,
     padding: SizeConstants.paddingSmall,
     color: ColorConstants.font,
-    fontWeight:FontConstants.weightBold,
+    fontWeight: FontConstants.weightBold,
   },
   mediumLogo: {
     borderRadius: 10,
-  borderWidth: 1,
-    flex:1,
-    width:180,
-    height:252,
+    flex: 1,
+    width: 180,
+    height: 252,
   },
 });
 
