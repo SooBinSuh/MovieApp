@@ -7,7 +7,7 @@ RN을 사용하여 개발한 영화 추천 및 즐겨찾기 관리 앱입니다.
 React Native, Redux-Toolkit, RTK-Query, Flipper
 
 
-# 현재까지 기능
+# 구현된 기능
 
 - 영화 탭
    - 장르별 영화 검색 기능(인기도 내림차순)
