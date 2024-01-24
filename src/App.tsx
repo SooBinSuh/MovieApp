@@ -16,6 +16,7 @@ import {ColorConstants} from './constants/Constants';
 
 import {store} from './store/rootStore';
 import Search from './views/search/Search';
+import Icon from 'react-native-vector-icons/Ionicons';
 
 const MainStack = createNativeStackNavigator<MainStackParamList>();
 const UserStack = createNativeStackNavigator<UserStackParamList>();
@@ -55,7 +56,20 @@ const App = () => {
         <SafeAreaView style={{flex: 1}}>
           <NavigationContainer>
             {/* <MainStackScreen/> */}
-            <TabNavigator.Navigator>
+            <TabNavigator.Navigator
+            screenOptions={({route})=>({
+              tabBarIcon:({focused, color,size})=>{
+                let iconName='';
+
+                if(route.name === 'MoviesTab'){
+                  iconName = focused ? 'videocam':'videocam-outline'
+                } else if(route.name === 'UserTab'){
+                  iconName = focused ? 'person' : 'person-outline'
+                }
+                return <Icon name={iconName} size={size} color={color}/>
+              }
+            })}
+            >
               <TabNavigator.Screen
                 name="MoviesTab"
                 component={MainStackScreen}

@@ -1,6 +1,6 @@
 import React from 'react';
 import {StyleSheet, Text, View} from 'react-native';
-import {SizeConstants} from '../constants/Constants';
+import {ColorConstants, FontConstants, SizeConstants} from '../constants/Constants';
 
 interface HeaderContainerProps {
   title: string | undefined;
@@ -23,16 +23,20 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     borderBottomColor:'gray',
-    borderBottomWidth:0.2
+    borderBottomWidth:0.2,
+    marginHorizontal:SizeConstants.paddingLarge,
   },
   title: {
     flex: 1,
+    fontWeight:FontConstants.weightBold,
+    fontSize:FontConstants.sizeTitle,
+    color:ColorConstants.black700,
   },
   childrens: {
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
-    marginEnd: SizeConstants.paddingLarge,
+    
   },
 });
 

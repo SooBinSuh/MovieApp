@@ -30,12 +30,14 @@ import {
   useGetGenresQuery,
   useGetMoviesByGenreIdQuery,
 } from '../../services/movieService';
-import {useDispatch} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 import {IMovie} from '../../@types/IMovie';
 import {APIConstants} from '../../constants/APIConstants';
 import {useAppSelector} from '../../hooks';
 import HeaderContainer from '../../containers/HeaderContainer';
 import Icon from 'react-native-vector-icons/Ionicons';
+import { RootState } from '../../store/rootStore';
+
 
 
 
@@ -43,10 +45,12 @@ type HomeProps = NativeStackScreenProps<MainStackParamList, 'Home'>;
 
 const Home = (props: HomeProps) => {
   const {data} = useGetGenresQuery();
-  
+  // const user = useAppSelector(state => state.user);
+  const user = useSelector((state: RootState) => state.user)
+
   return (
     <View style={styles.rootContainer}>
-      <HeaderContainer title=''>
+      <HeaderContainer title={`Hello, ${user.name}`}>
         <Icon name="search" size={30} color={ColorConstants.black300} onPress={()=>props.navigation.navigate('Search')} />
       </HeaderContainer>
       <ScrollContainer>
