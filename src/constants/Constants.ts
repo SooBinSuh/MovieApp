@@ -1,7 +1,17 @@
 import {Appearance, TextStyle} from 'react-native';
 
-type FontWeight = 'normal' | 'bold' | '100' | '200' | '300' | '400' | '500' | '600' | '700' | '800' | '900';
-
+type FontWeight =
+  | 'normal'
+  | 'bold'
+  | '100'
+  | '200'
+  | '300'
+  | '400'
+  | '500'
+  | '600'
+  | '700'
+  | '800'
+  | '900';
 
 const isDarkMode = Appearance.getColorScheme() === 'dark';
 const FontConstants = {
@@ -9,15 +19,19 @@ const FontConstants = {
   sizeTitle: 18,
   sizeSmall: 12,
   sizeRegular: 14,
+  sizeLarge: 16,
 
-  
-  weightBold: "bold" as FontWeight,
+  weightBold: 'bold' as FontWeight,
+  weightSemiBold : '600' as FontWeight,
+  weightExtraBold: '900' as FontWeight,
 };
 const ColorConstants = {
   background: isDarkMode ? '#333333' : '#efefef',
   backgroundMedium: isDarkMode ? '#666666' : '#dddddd',
-  backgroundLight: isDarkMode ? 'gray': 'gray',
+  backgroundLight: isDarkMode ? 'gray' : 'gray',
   font: isDarkMode ? '#eeeeee' : '#222222',
+  warning30: '#EB144C',
+  green30: '#7BDCB5',
 };
 const SizeConstants = {
   paddingSmall: 2,

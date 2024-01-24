@@ -37,15 +37,6 @@ type HomeProps = NativeStackScreenProps<MainStackParamList, 'Home'>;
 const Home = (props: HomeProps) => {
   const {data} = useGetGenresQuery();
 
-  useEffect(() => {
-    console.log('HOME navigation:', props.navigation.isFocused());
-  }, [props.navigation]);
-
-  const onGenrePress = (genre: IGenre) => {
-    console.log('ongenrepress');
-    props.navigation.navigate('Genre', {genre: genre});
-  };
-
   return (
     <ScrollContainer>
       {/* <Button title='test me' onPress={onButtonPress}/> */}
@@ -94,7 +85,6 @@ const GenreMovieStrip = (props: {movieId: number}) => {
             </Pressable>
           )}
           keyExtractor={item => `${item.id}`}
-          // style={{paddingHorizontal:20}}
         />
       )}
     </>
@@ -118,7 +108,7 @@ const MovieItem = (props: {
       <Image
         resizeMode="cover"
         style={styles.mediumLogo}
-        src={`${APIConstants.IMAGE_URL}${props.item.poster_path}`}
+        src={`${APIConstants.IMAGE_URL_SMALL}${props.item.poster_path}`}
       />
       {props.isFav && <Text style={{position:'absolute',top:SizeConstants.paddingRegular,start:SizeConstants.paddingRegular}}>👍</Text>}
     </View>
