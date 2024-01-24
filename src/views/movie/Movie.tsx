@@ -15,9 +15,8 @@ import {MainStackParamList} from '../../@types/Stacks';
 import {useDispatch, useSelector} from 'react-redux';
 
 import {useAppSelector} from '../../hooks';
-import {RootState} from '../../store/rootStore';
 import {APIConstants} from '../../constants/APIConstants';
-import {getDateProps} from '../../util/parsers';
+import {addCommaNumber, getDateProps} from '../../util/parsers';
 
 type MovieProps = NativeStackScreenProps<MainStackParamList, 'Movie'>;
 
@@ -38,16 +37,20 @@ const Movie = (props: MovieProps) => {
                 style={{height: 200}}
                 src={`${APIConstants.IMAGE_URL_REGULAR}${_movie?.backdrop_path}`}
               />
-            ) : (props.route.params.movie.poster_path ? (
+            ) : props.route.params.movie.poster_path ? (
               <Image
                 style={{height: 200}}
-                resizeMode='contain'
+                resizeMode="contain"
                 src={`${APIConstants.IMAGE_URL_REGULAR}${_movie?.poster_path}`}
               />
-            ):null)}
+            ) : null}
 
             <Text style={styles.title}>{_movie?.title}</Text>
-            <Text style={styles.subtitle}>{year}</Text>
+            <View style={styles.criticsContainer}>
+              <Text style={[styles.subtitle,styles.criticsItem]}>{year}</Text>
+              <Text style={styles.criticsItem}>{`⭐️${_movie?.vote_average}(${addCommaNumber(_movie?.vote_count)})`}</Text>
+              {/* <Text style={styles.criticsItem}>{addCommaNumber(_movie?.popularity)}</Text> */}
+            </View>
             <Text style={styles.overview}>
               {props.route.params.movie.overview}
             </Text>
@@ -96,6 +99,13 @@ const styles = StyleSheet.create({
     fontSize: FontConstants.sizeRegular,
     fontWeight: FontConstants.weightSemiBold,
     marginVertical: SizeConstants.paddingRegular,
+  },
+  criticsContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  criticsItem:{
+    marginEnd:SizeConstants.paddingRegular,
   },
   overview: {
     fontSize: FontConstants.sizeRegular,

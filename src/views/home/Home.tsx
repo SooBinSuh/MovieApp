@@ -39,11 +39,9 @@ const Home = (props: HomeProps) => {
 
   return (
     <ScrollContainer>
-      {/* <Button title='test me' onPress={onButtonPress}/> */}
       {data !== undefined
         ? data.genres.map(genre => {
             return (
-              // <Pressable key={genre.id} onPress={() => onGenrePress(genre)}>
               <View key={genre.id}>
                 <Text style={styles.genreTitle}>{genre.name}</Text>
                 <GenreMovieStrip movieId={genre.id} />
