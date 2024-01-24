@@ -57,6 +57,7 @@ const Home = (props: HomeProps) => {
 
 const GenreMovieStrip = (props: {movieId: number}) => {
   const {data, error, isLoading} = useGetMoviesByGenreIdQuery(props.movieId);
+  console.log(data?.results.length);
   const {favs} = useAppSelector(state => state.user);
   const navigation = useNavigation<StackNavigationProp<MainStackParamList>>();
 
