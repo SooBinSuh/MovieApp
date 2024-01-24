@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
 import {Provider} from 'react-redux';
 
-import {View} from 'react-native';
+import {View, SafeAreaView} from 'react-native';
 import {IGenre} from './@types/IGenre';
 import {IMovie} from './@types/IMovie';
 import Home from './views/home/Home';
@@ -13,8 +13,9 @@ import {NavigationContainer} from '@react-navigation/native';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import User from './views/user/User';
 import {ColorConstants} from './constants/Constants';
-import {SafeAreaView} from 'react-native-safe-area-context';
-import { store } from './store/rootStore';
+
+import {store} from './store/rootStore';
+import Search from './views/search/Search';
 
 const MainStack = createNativeStackNavigator<MainStackParamList>();
 const UserStack = createNativeStackNavigator<UserStackParamList>();
@@ -26,26 +27,26 @@ const MainStackScreen = () => {
       <MainStack.Screen
         name="Home"
         component={Home}
+        options={{headerShown: false}}
       />
+      <MainStack.Screen name="Genre" component={Genre} />
+      <MainStack.Screen name="Movie" component={Movie} />
       <MainStack.Screen
-        name="Genre"
-        component={Genre}
-      />
-      <MainStack.Screen
-        name="Movie"
-        component={Movie}
+        name="Search"
+        component={Search}
+        options={{headerTitle:'',headerBackTitleVisible:false}}
       />
     </MainStack.Navigator>
   );
 };
-const UserStackScreen = ()=>{
+const UserStackScreen = () => {
   return (
     <UserStack.Navigator>
       <UserStack.Screen name="User" component={User} />
       <UserStack.Screen name="Movie" component={Movie} />
     </UserStack.Navigator>
-  )
-}
+  );
+};
 
 const App = () => {
   return (
@@ -54,12 +55,7 @@ const App = () => {
         <SafeAreaView style={{flex: 1}}>
           <NavigationContainer>
             {/* <MainStackScreen/> */}
-            <TabNavigator.Navigator
-              screenOptions={
-                {
-                  // unmountOnBlur:true
-                }
-              }>
+            <TabNavigator.Navigator>
               <TabNavigator.Screen
                 name="MoviesTab"
                 component={MainStackScreen}

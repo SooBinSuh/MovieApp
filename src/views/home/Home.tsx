@@ -19,10 +19,13 @@ import {
   FontConstants,
   SizeConstants,
 } from '../../constants/Constants';
-import {NativeStackNavigationProp, NativeStackScreenProps} from '@react-navigation/native-stack';
+import {
+  NativeStackNavigationProp,
+  NativeStackScreenProps,
+} from '@react-navigation/native-stack';
 import {MainStackParamList} from '../../@types/Stacks';
 import {NavigationContainer, useNavigation} from '@react-navigation/native';
-import type { StackNavigationProp } from '@react-navigation/stack';
+import type {StackNavigationProp} from '@react-navigation/stack';
 import {
   useGetGenresQuery,
   useGetMoviesByGenreIdQuery,
@@ -30,26 +33,35 @@ import {
 import {useDispatch} from 'react-redux';
 import {IMovie} from '../../@types/IMovie';
 import {APIConstants} from '../../constants/APIConstants';
-import { useAppSelector } from '../../hooks';
+import {useAppSelector} from '../../hooks';
+import HeaderContainer from '../../containers/HeaderContainer';
+import Icon from 'react-native-vector-icons/Ionicons';
+
+
 
 type HomeProps = NativeStackScreenProps<MainStackParamList, 'Home'>;
 
 const Home = (props: HomeProps) => {
   const {data} = useGetGenresQuery();
-
+  
   return (
-    <ScrollContainer>
-      {data !== undefined
-        ? data.genres.map(genre => {
-            return (
-              <View key={genre.id}>
-                <Text style={styles.genreTitle}>{genre.name}</Text>
-                <GenreMovieStrip movieId={genre.id} />
-              </View>
-            );
-          })
-        : null}
-    </ScrollContainer>
+    <View style={styles.rootContainer}>
+      <HeaderContainer title=''>
+        <Icon name="search" size={30} color={ColorConstants.black300} onPress={()=>props.navigation.navigate('Search')} />
+      </HeaderContainer>
+      <ScrollContainer>
+        {data !== undefined
+          ? data.genres.map(genre => {
+              return (
+                <View key={genre.id}>
+                  <Text style={styles.genreTitle}>{genre.name}</Text>
+                  <GenreMovieStrip movieId={genre.id} />
+                </View>
+              );
+            })
+          : null}
+      </ScrollContainer>
+    </View>
   );
 };
 
@@ -62,9 +74,9 @@ const GenreMovieStrip = (props: {movieId: number}) => {
   if (isLoading) {
     return <ActivityIndicator />;
   }
-  const onMoviePress = (movie:IMovie)=>{
-    navigation.navigate('Movie',{movie:movie});
-  }
+  const onMoviePress = (movie: IMovie) => {
+    navigation.navigate('Movie', {movie: movie});
+  };
   return (
     <>
       {error !== undefined ? (
@@ -74,7 +86,7 @@ const GenreMovieStrip = (props: {movieId: number}) => {
           horizontal={true}
           data={data?.results}
           renderItem={({item, index}) => (
-            <Pressable onPress={()=>onMoviePress(item)}>
+            <Pressable onPress={() => onMoviePress(item)}>
               <MovieItem
                 item={item}
                 isFirst={index == 0}
@@ -109,12 +121,24 @@ const MovieItem = (props: {
         style={styles.mediumLogo}
         src={`${APIConstants.IMAGE_URL_SMALL}${props.item.poster_path}`}
       />
-      {props.isFav && <Text style={{position:'absolute',top:SizeConstants.paddingRegular,start:SizeConstants.paddingRegular}}>👍</Text>}
+      {props.isFav && (
+        <Text
+          style={{
+            position: 'absolute',
+            top: SizeConstants.paddingRegular,
+            start: SizeConstants.paddingRegular,
+          }}>
+          👍
+        </Text>
+      )}
     </View>
   );
 };
 
 const styles = StyleSheet.create({
+  rootContainer: {
+    flex: 1,
+  },
   genreTitle: {
     fontSize: FontConstants.sizeTitle,
     marginTop: SizeConstants.paddingRegular,

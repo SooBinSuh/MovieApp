@@ -8,7 +8,8 @@ interface HeaderProps {
 }
 
 const Header = (props: HeaderProps) => {
-  return <Text style={styles.header}>{props.text}</Text>;
+  // return ()
+  // return <Text style={styles.header}>{props.text}</Text>;
 };
 
 const styles = StyleSheet.create({

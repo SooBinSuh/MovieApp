@@ -9,14 +9,14 @@ interface ScrollContainerProps {
 
 const ScrollContainer = (props: ScrollContainerProps) => {
   return (
-    <SafeAreaView style={styles.backgroundStyle}>
+    // <SafeAreaView style={styles.backgroundStyle}>
       <ScrollView
         // contentInsetAdjustmentBehavior="automatic"
         contentContainerStyle={styles.contentContainer}
         style={styles.backgroundStyle}>
         {props.children}
       </ScrollView>
-    </SafeAreaView>
+    // </SafeAreaView>
   );
 };
 

@@ -32,6 +32,10 @@ const ColorConstants = {
   font: isDarkMode ? '#eeeeee' : '#222222',
   warning30: '#EB144C',
   green30: '#7BDCB5',
+  black300: '#C2CEDC',
+  black500: '#5C646C',
+  black700: '#3A444E',
+
 };
 const SizeConstants = {
   paddingSmall: 2,
