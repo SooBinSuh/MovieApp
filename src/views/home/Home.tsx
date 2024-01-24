@@ -19,9 +19,10 @@ import {
   FontConstants,
   SizeConstants,
 } from '../../constants/Constants';
-import {NativeStackScreenProps} from '@react-navigation/native-stack';
+import {NativeStackNavigationProp, NativeStackScreenProps} from '@react-navigation/native-stack';
 import {MainStackParamList} from '../../@types/Stacks';
-import {NavigationContainer} from '@react-navigation/native';
+import {NavigationContainer, useNavigation} from '@react-navigation/native';
+import type { StackNavigationProp } from '@react-navigation/stack';
 import {
   useGetGenresQuery,
   useGetMoviesByGenreIdQuery,
@@ -29,6 +30,7 @@ import {
 import {useDispatch} from 'react-redux';
 import {IMovie} from '../../@types/IMovie';
 import {APIConstants} from '../../constants/APIConstants';
+import { useAppSelector } from '../../hooks';
 
 type HomeProps = NativeStackScreenProps<MainStackParamList, 'Home'>;
 
@@ -43,6 +45,7 @@ const Home = (props: HomeProps) => {
     console.log('ongenrepress');
     props.navigation.navigate('Genre', {genre: genre});
   };
+
   return (
     <ScrollContainer>
       {/* <Button title='test me' onPress={onButtonPress}/> */}
@@ -63,11 +66,15 @@ const Home = (props: HomeProps) => {
 
 const GenreMovieStrip = (props: {movieId: number}) => {
   const {data, error, isLoading} = useGetMoviesByGenreIdQuery(props.movieId);
+  const {favs} = useAppSelector(state => state.user);
+  const navigation = useNavigation<StackNavigationProp<MainStackParamList>>();
 
   if (isLoading) {
     return <ActivityIndicator />;
   }
-
+  const onMoviePress = (movie:IMovie)=>{
+    navigation.navigate('Movie',{movie:movie});
+  }
   return (
     <>
       {error !== undefined ? (
@@ -77,11 +84,14 @@ const GenreMovieStrip = (props: {movieId: number}) => {
           horizontal={true}
           data={data?.results}
           renderItem={({item, index}) => (
-            <MovieItem
-              item={item}
-              isFirst={index == 0}
-              isLast={item === data?.results[data.results.length - 1]}
-            />
+            <Pressable onPress={()=>onMoviePress(item)}>
+              <MovieItem
+                item={item}
+                isFirst={index == 0}
+                isLast={item === data?.results[data.results.length - 1]}
+                isFav={favs[item.id] !== undefined}
+              />
+            </Pressable>
           )}
           keyExtractor={item => `${item.id}`}
           // style={{paddingHorizontal:20}}
@@ -95,6 +105,7 @@ const MovieItem = (props: {
   item: IMovie;
   isFirst: boolean;
   isLast: boolean;
+  isFav: boolean;
 }) => {
   return (
     <View
@@ -109,6 +120,7 @@ const MovieItem = (props: {
         style={styles.mediumLogo}
         src={`${APIConstants.IMAGE_URL}${props.item.poster_path}`}
       />
+      {props.isFav && <Text style={{position:'absolute',top:SizeConstants.paddingRegular,start:SizeConstants.paddingRegular}}>👍</Text>}
     </View>
   );
 };
