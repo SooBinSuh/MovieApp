@@ -36,22 +36,24 @@ import {APIConstants} from '../../constants/APIConstants';
 import {useAppSelector} from '../../hooks';
 import HeaderContainer from '../../containers/HeaderContainer';
 import Icon from 'react-native-vector-icons/Ionicons';
-import { RootState } from '../../store/rootStore';
-
-
-
+import {RootState} from '../../store/rootStore';
 
 type HomeProps = NativeStackScreenProps<MainStackParamList, 'Home'>;
 
 const Home = (props: HomeProps) => {
   const {data} = useGetGenresQuery();
   // const user = useAppSelector(state => state.user);
-  const user = useSelector((state: RootState) => state.user)
+  const user = useSelector((state: RootState) => state.user);
 
   return (
     <View style={styles.rootContainer}>
       <HeaderContainer title={`Hello, ${user.name}`}>
-        <Icon name="search" size={30} color={ColorConstants.black300} onPress={()=>props.navigation.navigate('Search')} />
+        <Icon
+          name="search"
+          size={30}
+          color={ColorConstants.black300}
+          onPress={() => props.navigation.navigate('Search')}
+        />
       </HeaderContainer>
       <ScrollContainer>
         {data !== undefined
@@ -106,23 +108,25 @@ const GenreMovieStrip = (props: {movieId: number}) => {
   );
 };
 
-const MovieItem = (props: {
+export const MovieItem = (props: {
   item: IMovie;
   isFirst: boolean;
   isLast: boolean;
   isFav: boolean;
+  width?: number;
 }) => {
+  const translateWidth = props.width ? props.width : 180;
   return (
     <View
       style={{
-        width: 180,
+        width: translateWidth,
         marginVertical: 8,
-        marginStart: props.isFirst ? 0 : 8,
-        marginEnd: props.isLast ? 0 : 8,
+        marginStart: props.isFirst ? 0 : SizeConstants.paddingRegular,
+        marginEnd: props.isLast ? 0 : SizeConstants.paddingRegular,
       }}>
       <Image
         resizeMode="cover"
-        style={styles.mediumLogo}
+        style={{borderRadius: 10, flex: 1, width: translateWidth, height: 252}}
         src={`${APIConstants.IMAGE_URL_SMALL}${props.item.poster_path}`}
       />
       {props.isFav && (

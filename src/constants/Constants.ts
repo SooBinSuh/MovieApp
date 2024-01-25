@@ -1,4 +1,4 @@
-import {Appearance, TextStyle} from 'react-native';
+import {Appearance, Dimensions, TextStyle} from 'react-native';
 
 type FontWeight =
   | 'normal'
@@ -42,5 +42,7 @@ const SizeConstants = {
   paddingRegular: 8,
   paddingLarge: 16,
   borderRadius: 8,
+  screenWidth: Dimensions.get('window').width,
+  screenHeight: Dimensions.get('window').height,
 };
 export {FontConstants, ColorConstants, SizeConstants};

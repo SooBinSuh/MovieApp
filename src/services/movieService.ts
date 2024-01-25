@@ -119,9 +119,12 @@ export const movieApi = createApi({
     }),
     getMovieById: builder.query<IMovie | undefined, number>({
       query:(movieId)=> `movie/${movieId}`
-    })
+    }),
+    getMovieByTitle: builder.query<{results:Array<IMovie>},string>({
+      query:(title)=> `search/movie?query=${title}&api_key=${APIConstants.API_KEY}`
+    }),
   }),
 });
 
-export const {useGetGenresQuery,useGetMoviesByGenreIdQuery} = movieApi
+export const {useGetGenresQuery,useGetMoviesByGenreIdQuery,useGetMovieByTitleQuery} = movieApi
 

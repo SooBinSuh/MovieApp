@@ -35,7 +35,7 @@ const MainStackScreen = () => {
       <MainStack.Screen
         name="Search"
         component={Search}
-        options={{headerTitle:'',headerBackTitleVisible:false}}
+        options={{headerTitle:'Search',headerBackTitleVisible:false}}
       />
     </MainStack.Navigator>
   );
@@ -43,7 +43,7 @@ const MainStackScreen = () => {
 const UserStackScreen = () => {
   return (
     <UserStack.Navigator>
-      <UserStack.Screen name="User" component={User} />
+      <UserStack.Screen name="User" component={User} options={{headerShown:false}}/>
       <UserStack.Screen name="Movie" component={Movie} />
     </UserStack.Navigator>
   );
@@ -55,7 +55,6 @@ const App = () => {
       <View style={{flex: 1}}>
         <SafeAreaView style={{flex: 1}}>
           <NavigationContainer>
-            {/* <MainStackScreen/> */}
             <TabNavigator.Navigator
             screenOptions={({route})=>({
               tabBarIcon:({focused, color,size})=>{
