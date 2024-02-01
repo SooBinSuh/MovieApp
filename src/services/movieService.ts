@@ -1,7 +1,12 @@
-import {BaseQueryFn, createApi, fetchBaseQuery} from '@reduxjs/toolkit/query/react';
+import {
+  BaseQueryFn,
+  createApi,
+  fetchBaseQuery,
+} from '@reduxjs/toolkit/query/react';
 import {IGenre} from '../@types/IGenre';
 import {IMovie} from '../@types/IMovie';
 import {APIConstants} from '../constants/APIConstants';
+import {current} from '@reduxjs/toolkit';
 
 const createFullAPIPath: (path: string) => string = path => {
   return (
@@ -59,8 +64,17 @@ const getMovieByGenreId = async (genreId: number): Promise<Array<IMovie>> => {
 type ApiResponse<T = any> = {
   data: T;
   status: number;
-}
-
+};
+type ListResponse<T> = {
+  page: number;
+  total_pages: number;
+  total_results: number;
+  results: T[];
+};
+type GetMovieByTitleQuery = {
+  keyword: string;
+  page?: number;
+};
 // Redux Toolkit Query version
 // export const movieApi = createApi({
 //   reducerPath: 'movieApi',
@@ -78,11 +92,7 @@ type ApiResponse<T = any> = {
 //   }),
 // });
 
-
-
-const baseQuery: BaseQueryFn= fetchBaseQuery({ baseUrl: APIConstants.API_URL });
-
-
+const baseQuery: BaseQueryFn = fetchBaseQuery({baseUrl: APIConstants.API_URL});
 
 const loggingFetchBaseQuery: BaseQueryFn = async (args, api, extraOptions) => {
   const startTime = Date.now();
@@ -93,38 +103,89 @@ const loggingFetchBaseQuery: BaseQueryFn = async (args, api, extraOptions) => {
 
     const result = await baseQuery(args, api, extraOptions);
     // Log response details
-    console.log(`API Response: ${args.url}`, JSON.stringify({
-      data: result.data,
-      duration: Date.now() - startTime,
-      // Add more properties as needed
-    }));
+    console.log(
+      `API Response: ${args.url}`,
+      JSON.stringify({
+        data: result.data,
+        duration: Date.now() - startTime,
+        // Add more properties as needed
+      }),
+    );
     return result;
   } catch (error) {
     // Log error details
     console.error(`API Error: ${args.url}`, error);
     return {error};
   }
-}
+};
 
 export const movieApi = createApi({
   reducerPath: 'movieApi',
-  baseQuery: loggingFetchBaseQuery,
+  // baseQuery: loggingFetchBaseQuery,
+  baseQuery: baseQuery,
   endpoints: builder => ({
-    getGenres: builder.query<{genres:Array<IGenre>}, void>({
-      query: () => `/genre/movie/list?api_key=${APIConstants.API_KEY}`
+    getGenres: builder.query<{genres: Array<IGenre>}, void>({
+      query: () => `/genre/movie/list?api_key=${APIConstants.API_KEY}`,
     }),
-    getMoviesByGenreId: builder.query<{results:Array<IMovie>},number>({
-      query:(genreId) => `discover/movie?with_genres=${genreId}&api_key=${APIConstants.API_KEY}`,
+    getMoviesByGenreId: builder.query<{results: Array<IMovie>}, number>({
+      query: genreId =>
+        `discover/movie?with_genres=${genreId}&api_key=${APIConstants.API_KEY}`,
       // keepUnusedDataFor:0.0001,//disables caching
     }),
     getMovieById: builder.query<IMovie | undefined, number>({
-      query:(movieId)=> `movie/${movieId}`
+      query: movieId => `movie/${movieId}`,
     }),
-    getMovieByTitle: builder.query<{results:Array<IMovie>},string>({
-      query:(title)=> `search/movie?query=${title}&api_key=${APIConstants.API_KEY}`
+    getMovieByTitle: builder.query<{results: Array<IMovie>}, string>({
+      query: title =>
+        `search/movie?query=${title}&api_key=${APIConstants.API_KEY}`,
+    }),
+    getMovieByTitlePaged: builder.query<
+      ListResponse<IMovie>,
+      GetMovieByTitleQuery
+    >({
+      query: params =>
+        `search/movie?query=${params.keyword}&page=${
+          params.page ?? 1
+        }&api_key=${APIConstants.API_KEY}`,
+        
+      serializeQueryArgs: ({queryArgs}) => {
+        const newArgs = {...queryArgs};
+        if (newArgs.page) {
+          delete newArgs.page;
+        }
+        console.log('queryargs:', newArgs);
+        return newArgs;
+      },
+      merge: (currentCache, newItems) => {
+        console.log('in merge, currCache:',JSON.stringify(currentCache),' \n\nnewitems:',JSON.stringify(newItems) );
+        if(currentCache.page >= newItems.page){
+          return newItems
+        }
+        
+        if (
+          !currentCache ||
+          !currentCache.results ||
+          currentCache.page > newItems.page
+        ) {
+          return newItems;
+        }
+        return {
+          ...newItems,
+          results: [...currentCache.results, ...newItems.results],
+        };
+      },
+      forceRefetch({currentArg, previousArg}) {
+        console.log('forceRefetch curkey:',currentArg?.keyword,' prevkey:',previousArg?.keyword);
+        console.log('forceRefetch curpage:',currentArg?.page,' prevpage:',previousArg?.page);
+        return currentArg?.page !== previousArg?.page
+      },
     }),
   }),
 });
 
-export const {useGetGenresQuery,useGetMoviesByGenreIdQuery,useGetMovieByTitleQuery} = movieApi
-
+export const {
+  useGetGenresQuery,
+  useGetMoviesByGenreIdQuery,
+  useGetMovieByTitleQuery,
+  useGetMovieByTitlePagedQuery,
+} = movieApi;

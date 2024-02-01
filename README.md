@@ -7,7 +7,7 @@ RN을 사용하여 개발한 영화 추천 및 즐겨찾기 관리 앱입니다.
 Redux-toolkit을 사용하여 state/action/reducer 패턴으로 구현했습니다.
 API 처리는 RTK_Query를 사용하여 미들웨어를 구현했습니다.
 
-# 사용 스택
+# 기술 스택
 
 React Native, Redux-Toolkit, RTK-Query, Flipper
 

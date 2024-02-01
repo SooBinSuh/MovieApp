@@ -42,7 +42,7 @@ type HomeProps = NativeStackScreenProps<MainStackParamList, 'Home'>;
 
 const Home = (props: HomeProps) => {
   const {data} = useGetGenresQuery();
-  // const user = useAppSelector(state => state.user);
+
   const user = useSelector((state: RootState) => state.user);
 
   return (
@@ -73,7 +73,7 @@ const Home = (props: HomeProps) => {
 
 const GenreMovieStrip = (props: {movieId: number}) => {
   const {data, error, isLoading} = useGetMoviesByGenreIdQuery(props.movieId);
-  console.log(data?.results.length);
+
   const {favs} = useAppSelector(state => state.user);
   const navigation = useNavigation<StackNavigationProp<MainStackParamList>>();
 
@@ -124,11 +124,31 @@ export const MovieItem = (props: {
         marginStart: props.isFirst ? 0 : SizeConstants.paddingRegular,
         marginEnd: props.isLast ? 0 : SizeConstants.paddingRegular,
       }}>
-      <Image
+      {props.item.poster_path == undefined ? (
+        <View style={{width:translateWidth, height:252, backgroundColor:'white',borderRadius:10,alignItems:'center',justifyContent:'center'}}>
+          <Icon
+            name="alert-circle-outline"
+            size={30}
+            color={ColorConstants.black300}
+          />
+        </View>
+      ) : (
+        <Image
+          resizeMode="cover"
+          style={{
+            borderRadius: 10,
+            flex: 1,
+            width: translateWidth,
+            height: 252,
+          }}
+          src={`${APIConstants.IMAGE_URL_SMALL}${props.item.poster_path}`}
+        />
+      )}
+      {/* <Image
         resizeMode="cover"
         style={{borderRadius: 10, flex: 1, width: translateWidth, height: 252}}
         src={`${APIConstants.IMAGE_URL_SMALL}${props.item.poster_path}`}
-      />
+      /> */}
       {props.isFav && (
         <Text
           style={{
